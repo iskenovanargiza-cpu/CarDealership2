@@ -173,6 +173,7 @@ public class UserInterface {
 
         if (vehicleByVin == null) {
             System.out.println("Vehicle not found. Please try again.");
+        }
 
             //2. Asking user if sale or lease
             System.out.println("Choose the number for transaction:");
@@ -185,14 +186,13 @@ public class UserInterface {
             Contract contract = null;
 
 
-
             switch (userChoice) {
                 case 1:
-                    contract = sellVehicle(date, customerName, customerEmail, vehicle);
+                    contract = sellVehicle(date, customerName, customerEmail, vehicleByVin);
                     break;
 
                 case 2:
-                    contract = leaseVehicle(date, customerName, customerEmail, vehicle);
+                    contract = leaseVehicle(date, customerName, customerEmail, vehicleByVin);
                     break;
 
                 default:
@@ -201,8 +201,6 @@ public class UserInterface {
             }
         }
     }
-
-
         public static void homeMenuScreen () {
             System.out.println("=== Options ===");
             System.out.println("1 - Find vehicles within a price range");
@@ -218,8 +216,8 @@ public class UserInterface {
             System.out.println("99 - Quit");
             }
         }
-    }
-}
+
+
 
 
 
