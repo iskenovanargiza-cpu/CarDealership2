@@ -1,27 +1,17 @@
 package com.pluralsight;
 
 public class SalesContract extends Contract {
-    private String date, customerName, customerEmail;
-    private Vehicle vehicle;
     private boolean isFinanced;
-    private double salesTaxAmount;
-    private double recordingFee;
-    private double processingFee;
 
-    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, double totalPrice, double monthlyPayment, String date1, String customerName1, String customerEmail1, Vehicle vehicle, boolean isFinanced, double salesTaxAmount, double recordingFee, double processingFee) {
-        super(date, customerName, customerEmail, vehicleSold, totalPrice, monthlyPayment);
-        this.date = date1;
-        this.customerName = customerName1;
-        this.customerEmail = customerEmail1;
-        this.vehicle = vehicle;
+
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold,boolean isFinanced) {
+        super(date, customerName, customerEmail, vehicleSold);
         this.isFinanced = isFinanced;
-        this.salesTaxAmount = salesTaxAmount;
-        this.recordingFee = recordingFee;
-        this.processingFee = processingFee;
+
     }
 
     public double getSalesTaxAmount() {
-        return vehicle.getPrice() * 0.05;
+        return this.vehicleSold.getPrice() * 0.05;
     }
 
     public double getRecordingFee() {
@@ -29,7 +19,7 @@ public class SalesContract extends Contract {
     }
 
     public double getProcessingFee() {
-        if (vehicle.getPrice() < 10000) {
+        if (this.vehicleSold.getPrice() < 10000) {
             return 295.00;
         }
         return 495.00;
@@ -37,7 +27,7 @@ public class SalesContract extends Contract {
 
     @Override
     public double getTotalPrice() {
-        return salesTaxAmount + recordingFee + processingFee;
+        return this.vehicleSold.getPrice() + getSalesTaxAmount() + getRecordingFee() + getProcessingFee();
     }
 
     @Override
@@ -78,11 +68,11 @@ public class SalesContract extends Contract {
     }
 
     public Vehicle getVehicle() {
-        return vehicle;
+        return this.vehicleSold;
     }
 
     public boolean isFinanced() {
-        return isFinanced;
+        return this.isFinanced;
     }
 
     public void setDate(String date) {
@@ -98,7 +88,7 @@ public class SalesContract extends Contract {
     }
 
     public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+        this.vehicleSold = vehicle;
     }
 
     public void setFinanced(boolean financed) {
