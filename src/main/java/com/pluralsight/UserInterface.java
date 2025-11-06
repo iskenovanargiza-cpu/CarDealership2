@@ -1,9 +1,10 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class Demo {
+public class UserInterface {
 
     private Dealership dealership;
     private Scanner scanner = new Scanner(System.in);
@@ -11,6 +12,7 @@ public class Demo {
     public UserInterface() {
 
     }
+
     private void init() {
         dealership = DealershipFileManager.getDealership();
     }
@@ -42,11 +44,11 @@ public class Demo {
                     System.out.println("Invalid option entered, please try again...");
                 }
             }
-        } while(true);
+        } while (true);
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
-        for (Vehicle v: vehicles) {
+        for (Vehicle v : vehicles) {
             System.out.println(v);
         }
         System.out.println();
@@ -177,9 +179,7 @@ public class Demo {
             System.out.println("Vehicle not found. Please try again.");
             return;
         } else {
-            displayVehicles();
-
-
+            displayVehicles(dealership.getAllVehicles());
         }
 
         //2. Asking user if sale or lease
@@ -194,17 +194,12 @@ public class Demo {
 
 
         switch (userChoice) {
-            case 1:
-                sellVehicle(date, customerName, customerEmail, vehicleByVin);
-                break;
-
-            case 2:
-                leaseVehicle(date, customerName, customerEmail, vehicleByVin);
-                break;
-
-            default:
+            case 1 -> sellVehicle(date, customerName, customerEmail, vehicleByVin);
+            case 2 -> leaseVehicle(date, customerName, customerEmail, vehicleByVin);
+            case 3 -> System.exit(0);
+            default -> {
                 System.out.println("Invalid choice.");
-                return;
+            }
         }
     }
 
@@ -212,30 +207,42 @@ public class Demo {
         System.out.println("Will the customer finance? Enter 'Y' for yes and 'N' for no.");
         String userInput = scanner.nextLine();
         boolean isFinanced = userInput.equalsIgnoreCase("Y");
-        SalesContract sc = new SalesContract(date, customerName, customerEmail, vehicle,isFinanced);
+        SalesContract sc = new SalesContract(date, customerName, customerEmail, vehicle, isFinanced);
         ContractFileManager.saveContract(sc);
         dealership.removeVehicle(vehicle);
-
-
-
-
-
+        System.out.println("Sell contract has been created successfully.");
     }
 
+    public void leaseVehicle(String date, String customerName, String customerEmail, Vehicle vehicle) {
+        int year = LocalDate.now().getYear();
+        int vehicleAge = year - vehicle.getYear();
+        if (vehicleAge > 3) {
+            System.out.println("This vehicle is too old to lease. You mau choose a different vehicle.");
+            return;
+        } else {
+            LeaseContract lc = new LeaseContract(date, customerName, customerEmail, vehicle);
+            ContractFileManager.saveContract(lc);
+            dealership.removeVehicle(vehicle);
+            System.out.println("Lease contract has been created successfully.");
+
+        }
+    }
+
+    public static void homeMenuScreen() {
+        System.out.println("=== Options ===");
+        System.out.println("1 - Find vehicles within a price range");
+        System.out.println("2 - Find vehicles by make / model");
+        System.out.println("3 - Find vehicles by year range");
+        System.out.println("4 - Find vehicles by color");
+        System.out.println("5 - Find vehicles by mileage range");
+        System.out.println("6 - Find vehicles by type (car, truck, SUV, van)");
+        System.out.println("7 - List ALL vehicles");
+        System.out.println("8 - Add a vehicle");
+        System.out.println("9 - Remove a vehicle");
+        System.out.println("10 - Sell / Lease a vehicle");
+        System.out.println("99 - Quit");
+
+    }
 }
 
-public static void homeMenuScreen () {
-    System.out.println("=== Options ===");
-    System.out.println("1 - Find vehicles within a price range");
-    System.out.println("2 - Find vehicles by make / model");
-    System.out.println("3 - Find vehicles by year range");
-    System.out.println("4 - Find vehicles by color");
-    System.out.println("5 - Find vehicles by mileage range");
-    System.out.println("6 - Find vehicles by type (car, truck, SUV, van)");
-    System.out.println("7 - List ALL vehicles");
-    System.out.println("8 - Add a vehicle");
-    System.out.println("9 - Remove a vehicle");
-    System.out.println("10 - Sell / Lease a vehicle");
-    System.out.println("99 - Quit");
-}
 

@@ -4,7 +4,7 @@ public class SalesContract extends Contract {
     private boolean isFinanced;
 
 
-    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold,boolean isFinanced) {
+    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
         super(date, customerName, customerEmail, vehicleSold);
         this.isFinanced = isFinanced;
 
